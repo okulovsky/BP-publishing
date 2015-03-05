@@ -1,1 +1,8 @@
 volume2/YoutubeApiCredentials/
+volume2/Latex/*.log
+volume2/Latex/*.aux
+volume2/Latex/*.nav
+volume2/Latex/*.out
+volume2/Latex/*.snm
+volume2/Latex/*.gz
+volume2/Latex/*.toc

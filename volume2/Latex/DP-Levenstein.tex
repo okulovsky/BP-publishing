@@ -1,0 +1,174 @@
+\documentclass[24pt,pdf,hyperref={unicode},aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{tikz}
+\usepackage{cancel}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+\tikzstyle{dedge} = [draw,thick,->]
+
+\begin{document}
+
+\section{Вычисление расстояния Левенштейна}
+
+\begin{frame}
+$$
+bc \rightarrow \overset{a}{\vee}bc \rightarrow abc
+$$ 
+
+$$
+bbc \rightarrow \overset{a}{\cancel{b}}bc \rightarrow abc
+$$
+
+$$
+xabc \rightarrow \cancel{x}abc \rightarrow abc
+$$
+
+$$
+xbc \rightarrow \overset{a}{\cancel{x}}bc\rightarrow abc
+$$
+
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=2.5cm,y=-1.1cm]
+\uncover<+->{
+\node (n0) at (0,0) {$yabxe\rightarrow abcde$};
+}
+
+\uncover<+->{
+\node (n1) at (0,1) {$yabx\rightarrow abcd$};
+\path[dedge] (n0) -- (n1);
+}
+
+\uncover<+->{
+\node (n21) at (-1,2) {$yabx\rightarrow abc$};
+\path[dedge] (n1) -- node[above left] {$\overset{d}{\vee}$} (n21);
+
+\node (n22) at (0,2) {$yab\rightarrow abc$};
+\path[dedge] (n1) -- node[ left] {$\overset{d}{\cancel{x}}$} (n22);
+
+\node (n23) at (1,2) {$yab\rightarrow abcd$};
+\path[dedge] (n1) -- node[ left] {$\cancel{x}$} (n23);
+}
+
+\uncover<+->{
+\node (n3) at (0,3) {$yab\rightarrow ab$};
+\path[dedge] (n21) -- node[below left] {$\overset{c}{\cancel{x}}$} (n3);
+\path[dedge] (n22) -- node[left] {$\overset{c}{\vee}$} (n3);
+}
+
+\uncover<+->{
+\node(n31) at (-2,3) {...};
+
+\path[dedge] (n21) -- node[above left] {$\overset{c}{\vee},\ \cancel{x}$} (n31);
+
+\node(n32) at (1,3) {...};
+
+\path[dedge] (n22) -- node[above right] {$\cancel{b},\ \overset{c}{\cancel{b}}$} (n32);
+
+\node(n33) at (2,3) {...};
+
+\path[dedge] (n23) -- node[above right] {$\overset{d}{\cancel{b}},\ \cancel{b},\ \overset{d}{\vee}$} (n33);
+}
+
+
+
+\uncover<+->{
+	\node (n44) at (0,4) {$ya\rightarrow a$};
+	\path[dedge] (n3) -- (n44);
+}
+
+\uncover<+->{
+\node (n4) at (0,5) {$y\rightarrow$\textvisiblespace};
+\path[dedge] (n44) -- (n4);
+}
+
+\uncover<+->{
+\node(n5) at (0,6) {\textvisiblespace$\rightarrow$\textvisiblespace};
+\path[dedge] (n4) -- node[left] {$\cancel{y}$} (n5);
+}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=2cm,y=-1.5cm]
+\foreach \x/\s in {0/\textvisiblespace,1/a,2/ab,3/abc,4/abcd}
+\node at (\x,-1) {\s};
+
+\foreach \y/\s in {0/\textvisiblespace,1/y,2/ya,3/yab,4/yabx}
+\node at (-1,\y) {\s};
+
+\node (v00) at (0,0) {0};
+
+\foreach \y/\x/\s/\py/\px in {
+0/1/1/0/0,
+1/0/1/0/0,
+0/2/2/0/1,
+1/1/1/0/0,
+2/0/2/1/0,
+0/3/3/0/2,
+1/2/2/0/1,
+2/1/1/1/0,
+3/0/3/2/0,
+0/4/4/0/3,
+1/3/3/0/2,
+2/2/2/1/1,
+3/1/2/2/1,
+4/0/4/3/0,
+1/4/4/0/3,
+2/3/3/1/2,
+3/2/1/2/1,
+4/1/3/3/1,
+2/4/4/1/3,
+3/3/2/3/2,
+4/2/2/3/2,
+3/4/3/3/3,
+4/3/2/3/2,
+4/4/3/3/3}
+{
+\uncover<+->{
+\node (v\x\y) at (\x,\y) {\s};
+\path[dedge] (v\x\y) -- (v\px\py);	
+}
+}
+	
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+$$
+OPT(i,j)=\left\{\begin{array}{l}
+OPT(i-1,i-1),\ $при$\ s_1[i]=s_2[j] \\
+\min\left\{\begin{array}{l}
+1+OPT(i-1,j) \\
+1+OPT(i-1,j-1) \\
+1+OPT(i,j-1) \\
+\end{array}
+\right.
+\end{array}
+\right.
+$$
+\end{frame}
+
+\begin{frame}
+$$
+OPT(i,j)=\left\{\begin{array}{l}
+OPT(i-1,i-1),\ $при$\ s_1[i]=s_2[j] \\
+\min\left\{\begin{array}{l}
+w_i+OPT(i-1,j) \\
+w_r+OPT(i-1,j-1) \\
+w_d+OPT(i,j-1) \\
+\end{array}
+\right.
+\end{array}
+\right.
+$$
+\end{frame}
+
+\end{document}

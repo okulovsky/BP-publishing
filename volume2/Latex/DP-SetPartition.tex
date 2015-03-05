@@ -1,0 +1,114 @@
+\documentclass[24pt,pdf,hyperref={unicode},aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{tikz}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+
+\tikzstyle{dedge} = [draw,thick,->]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{gedge} = [draw=green,thick,-]
+\tikzstyle{redge} = [draw=red,thick,-]
+\tikzstyle{ver} = [circle, draw=black]
+\tikzstyle{verg} = [circle, draw=black, fill=gray]
+\tikzstyle{verb} = [circle, draw=black, fill=black, text=white]
+
+\deftranslation[to=russian]{Lemma}{Лемма}
+\deftranslation[to=russian]{Theorem}{Теорема}
+
+
+\begin{document}
+
+\section{Динамическое программировании в задаче разбиения}
+
+\begin{frame}
+
+Дано $A\subset \mathbb{N}$. Найти $B\subset A$ такое, что 
+
+$$
+\sum_{b\in B} b = \sum_{a\in A\setminus B} a
+$$.
+
+$$
+2,3,4,5 \rightarrow 2+5=3+4 \rightarrow 2-3-4+5=0
+$$
+	
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=2cm,y=-2cm]
+\uncover<+->{
+\node (n0) at (0,0) {0};
+}
+
+\uncover<+->{
+\node (n1) at (0,1) {5};
+\path[dedge] (n0) -- node[right] {+5} (n1);
+\node (n11) at (-1,1) {-5};
+\path[dedge] (n0) -- node[above left] {-5} (n11);
+}
+
+\uncover<+->{
+\node (n2) at (0,2) {1};
+\path[dedge] (n1) -- node[left] {-4} (n2);
+
+\node (n21) at (1,2) {9};
+\path[dedge] (n1) -- node[above right] {+4} (n21);
+}
+
+\uncover<+->{
+\node (n3) at (0,3) {-2};
+\path[dedge] (n2) -- node[right] {-3} (n3);
+
+\node (n31) at (-1,3) {4};
+\path[dedge] (n2) -- node[above left] {+3} (n31);
+}
+
+\uncover<+->{
+\node (n4) at (0,4) {0};
+\path[dedge] (n3) -- node[left] {+2} (n4);
+
+\node (n41) at (1,4) {-4};
+\path[dedge] (n3) -- node[above right] {-2} (n41);
+}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=0.5cm,y=-1cm]
+\uncover<+->{}
+\uncover<+->{
+\node (v20) at (2,0) {2};
+}
+\foreach \y/\x/\py/\px in {
+1/-1/0/2,
+1/5/0/2,
+2/-5/1/-1,
+2/3/1/-1,
+2/1/1/5,
+2/9/1/5,
+3/-10/2/-5,
+3/0/2/-5,
+3/-2/2/3,
+3/8/2/3,
+3/-4/2/1,
+3/6/2/1,
+3/14/2/9,
+3/4/2/9}
+{
+\uncover<+->{
+	\node(v\x\y) at (\x,\y) {\x};
+	\path[dedge] (v\px\py) -- (v\x\y);	
+}
+}
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+\end{document}

@@ -1,0 +1,349 @@
+\documentclass[24pt,pdf,hyperref={unicode},aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{tikz}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+
+\tikzstyle{dedge} = [draw,thick,->]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{gedge} = [draw=green,thick,-]
+\tikzstyle{redge} = [draw=red,thick,-]
+\tikzstyle{ver} = [circle, draw=black]
+\tikzstyle{verg} = [circle, draw=black, fill=gray]
+\tikzstyle{verb} = [circle, draw=black, fill=black, text=white]
+
+\deftranslation[to=russian]{Lemma}{Лемма}
+\deftranslation[to=russian]{Theorem}{Теорема}
+
+
+\newcommand{\seg}[4]{
+\draw[draw=#4] (#1,#3) -- (#2,#3);
+\draw[draw=#4] ($(#1,#3)-(0,0.1)$) -- ($(#1,#3)+(0,0.1)$);
+\draw[draw=#4] ($(#2,#3)-(0,0.1)$) -- ($(#2,#3)+(0,0.1)$);
+}
+\newcommand{\segb}[3]{\seg{#1}{#2}{#3}{black}}
+
+\begin{document}
+
+\section{Комбинаторные задачи}
+
+
+\begin{frame}\frametitle{Задача разбиения}
+
+Найти такое подмножество $B$ множества $A\subset \mathbb{N}$, что 
+
+$$
+\sum_{x\in B} x = \sum_{x\in A\setminus B} x
+$$
+
+\end{frame}
+
+\begin{frame}\frametitle{Задача коммивояжера}
+
+
+Найти такой цикл $C$ во взвешенном графе $G$, что каждая вершина $G$ входит в $C$ ровно один раз, и суммарный вес $C$ минимален из возможных.
+\end{frame}
+
+
+\section{Составление расписаний}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}
+\segb{1}{4}{0}
+\segb{5}{8}{0}
+\segb{9}{12}{0}
+
+\segb{3}{6}{-1}
+\segb{7}{10}{-1}
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}
+\segb{1}{11}{0}
+\segb{2}{4}{-1}
+\segb{5}{7}{-1}
+\segb{8}{10}{-1}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}
+\segb{1}{5}{0}
+\segb{6}{10}{0}
+\segb{4}{7}{-1}
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=0.7cm]
+\segb{1}{4}{0}
+\segb{5}{8}{0}
+\segb{9}{12}{0}
+\segb{13}{16}{0}
+
+\segb{7}{10}{-1}
+
+\segb{3}{6}{-1}
+\segb{3}{6}{-2}
+\segb{3}{6}{-3}
+
+\segb{11}{14}{-1}
+\segb{11}{14}{-2}
+\segb{11}{14}{-3}
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\uncover<+->{
+Доказательство корректности:
+
+Пусть $s(x_i)$ -- начало промежутка $x_i$, $e(x_i)$ -- окончание.
+
+Пусть $y_1,\ldots,y_n$ -- решение, найденное жадным алгоритмом, и $z_1,\ldots,z_m$ -- оптимальное решение.}
+
+\uncover<+->{\begin{lemma}
+Для любого $k$, $e(y_k)\le e(z_k)$.
+\end{lemma}}
+
+\only<+>{\begin{proof}
+База индукции: жадный алгоритм выбирает $y_1$ так, что $e(y_1)$ -- минимально.
+
+Шаг индукции: поскольку $e(y_{k-1})\le e(z_{k-1})$, то $z_k$ является допустимым для продолжения $y_1,\ldots,y_{k-1}$. $y_k$ -- элемент с минимальным $e$ из всех допустимых, следовательно, $e(y_k)\le e(z_k)$.
+\end{proof}}
+
+\uncover<+->{\begin{lemma}
+$n\ge m$.
+\end{lemma}}
+\uncover<+->{\begin{proof}
+Пусть $m>n$. Поскольку $e(y_n)\le e(z_n)$, то $z_{n+1}$ допустим для $y_1,\ldots,y_n$. Но тогда жадный алгоритм включил бы его в эту последовательность.
+\end{proof}
+}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=2cm, y=-2cm]
+
+\node[ver] (n0) at (0,0) {};
+\node[ver] (n1) at (-1,1) {};
+\node[ver] (n2) at (-1,2) {};
+\node[ver] (n3) at (0,3) {};
+\node[ver] (n4) at (1,2) {};
+\node[ver] (n5) at (1,1) {};
+
+\only<1>{\path[edge] (n0) -- node[above] {1} (n1);}
+\only<2->{\path[gedge] (n0) -- node[above] {1} (n1);}
+
+\only<1-2>{\path[edge] (n2) -- node[below] {2} (n3);}
+\only<3->{\path[gedge] (n2) -- node[below] {2} (n3);}
+
+\only<1-3>{\path[edge] (n5) -- node[above] {3} (n0);}
+\only<4->{\path[gedge] (n5) -- node[above] {3} (n0);}
+
+\only<1-4>{\path[edge] (n1) -- node[above] {4} (n5);}
+\only<5->{\path[redge] (n1) -- node[above] {4} (n5);}
+
+\only<1-5>{\path[edge] (n1) -- node[above] {5} (n4);}
+\only<6->{\path[gedge] (n1) -- node[above] {5} (n4);}
+
+\only<1-6>{\path[edge] (n4) -- node[right] {6} (n5);}
+\only<7->{\path[redge] (n4) -- node[right] {6} (n5);}
+
+\only<1-7>{\path[edge] (n1) -- node[left]  {7} (n2);}
+\only<8->{\path[gedge] (n1) -- node[left]  {7} (n2);}
+
+\only<1-8>{\path[edge] (n3) -- node[below] {8} (n4);}
+\only<9->{\path[redge] (n3) -- node[below] {8} (n4);}
+
+\only<1-9>{\path[edge] (n2) -- node[below] {9} (n4);}
+\only<10->{\path[redge] (n2) -- node[below] {9} (n4);}
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\uncover<+->{\begin{theorem}
+На каждом шаге алгоритма Краскала, последовательность ребер $e_1,\ldots,e_k$ является подмножеством минимальное остовного дерева.
+\end{theorem}}
+\uncover<+->{\begin{proof}
+\uncover<+->{База индукции. Очевидно для $k=0$ и пустой последовательности.}
+
+\uncover<+->{Шаг индукции. Пусть $F=\{e_1,\ldots,e_{k-1}\}$. По предположению индукции, существует минимальное остовное дерево $T$, содержащее $F$. Если $T$ содержит $e_k$, то шаг индукции выполняется.}
+
+\uncover<+->{Если нет, то $T+e_k$ содержит цикл $C$. Этот цикл содержит некое ребро $p$, такое что $p$ не входит в $F$ (в противном случае, $F+e_k$ содержит цикл, и алгоритм Краскала не мог бы выбрать $e_k$ как продолжение $F$).}
+
+\uncover<+->{Тогда $T-p+e_k$ является деревом. Учтем, что $w(e_k)\le w(p)$, поскольку жадный алгоритм выбрал $e_k$, а не $p$. Следовательно, $w(T-p+e_k)\le w(T)$, но $T$ -- оптимально, следовально, $T-p+e_k$ также оптимально.}
+\end{proof}}
+
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=3cm, y=3cm]
+
+\node[ver] (n0) at (0,0) {{\uncover<2->{0}}};
+\node[ver] (n1) at (2,0) {{\uncover<5->{4}}};
+\node[ver] (n2) at (1,1) {{\uncover<3->{1}}};
+\node[ver] (n3) at (1,-1) {{\uncover<4->{2}}};
+
+\path [edge] (n0) -- node[above] {6} (n1);
+\path [edge] (n0) -- node[above] {1} (n2) -- node[above] {4} (n1);
+\path [edge] (n0) -- node[below] {2} (n3) -- node[below] {2} (n1);
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=3cm, y=3cm]
+
+\node[ver] (n0) at (0,0) {{\uncover<2->{0}}};
+\node[ver] (n1) at (2,0) {{\uncover<4->{4}}};
+\node[ver] (n2) at (1,1) {{\uncover<3->{2}}};
+\node[ver] (n3) at (1,-1) {{\uncover<5->{?}}};
+
+\path [edge] (n0) -- node[above] {2} (n2) -- node[above] {2} (n1);
+\path [edge] (n0) -- node[below] {5} (n3);
+\path [edge] (n2) -- node[left] {-4} (n3);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+
+\uncover<+->{Обозначим {\tt track.Keys} через $S$, ${\tt track}[v].{\tt Price}$ через $p(v)$, {\tt start} через $v_0$.}
+
+\uncover<+->{\begin{theorem}
+Пусть все веса в графе неотрицательны.  Тогда на каждом шаге алгоритма для всех $v$ из $S$, $p(v)$ является длиной кратчайшего пути из $v_0$ в $v$.
+\end{theorem}}
+\uncover<+->{\begin{proof}
+\uncover<+->{Индукция по количеству вершин в $S$.}
+
+\uncover<+->{База индукции: очевидно для $v_0$.}
+
+\uncover<+->{Шаг индукции. Пусть $v$ -- вершина, которую алгоритм добавляет в $S$ по ребру $(u,v)$. Пусть $P_u$ -- путь, найденный алгоритмом из $v_0$ в $u$, $P_v$ -- аналогичный путь для $v$. По предположению индукции $P_u$ является кратчайшим путем из $v_0$ в $u$. По выбору ребра $(u,v)$, $P_v$ является кратчайшим путем из $v_0$ в $v$ из тех, что проходят только через вершины из $S$.}
+
+\uncover<+->{Предположим, что $P_v$ не является кратчайшим. Следовательно, существует другой путь $P$ с меньшей длиной. Поскольку $P_v$ -- кратчайший из путей, которые состоят только из вершин $S$, в $P$ должна быть вершина не из $S$. Обозначим первую такую вершину как $y$, предшествующую ей -- как $x$.} 
+
+\end{proof}}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\uncover<1->{\begin{tikzpicture}[x=2cm, y=1cm]
+
+\node[ver, fill=gray] (n0) at (0,0) {$v_0$};
+\node[cloud, fill=gray] (n1) at (1,0) {$\ldots$};
+\node[ver, fill=gray] (nu) at (3,0) {$u$};
+\node[ver, fill=gray] (nx) at (2,-1) {$x$};
+\node[ver] (ny) at (3,-1) {$y$};
+\node[draw=black, cloud] (n2) at (4,-1) {$\ldots$};
+\node[ver] (nv) at (5,0) {$v$};
+
+\path[edge] (n0) -- (n1) -- node[above] {$P_u$} (nu) -- node[above] {$P_v$} (nv); 
+\path[edge] (n1) -- node[below] {$P_x$} (nx) -- (ny) -- (n2) -- node[below]{$P$} (nv); 
+
+\end{tikzpicture}}
+\end{center}
+
+$$
+\uncover<2->{\mathcal{L}(P_v)}
+\uncover<3->{=\mathcal{L}(P_u)+w(u,v)}
+\uncover<4->{\overset{1}{\le} \mathcal{L}(P_x)+w(x,y)}
+\uncover<5->{\overset{2}{\le} \mathcal{L}(P)}
+$$
+
+\uncover<4->{1) т.к. для добавления выбрана $v$, а не $y$}
+
+\uncover<5->{2) т.к. все веса неотрицательны}
+
+\end{frame}
+
+\begin{frame}
+
+$$
+A=\{2,5,1,6,10,4\}
+$$
+
+$$
+\begin{array}{c p{1cm} c}
+   && \uncover<7->{1} \\
+   && \uncover<6->{2} \\
+\uncover<5->{4} && \uncover<4->{5} \\
+\uncover<2->{10} && \uncover<3->{6} \\
+\end{array}
+$$
+\end{frame}
+
+\begin{frame}
+
+$$
+A=\{3,3,2,2,2\}
+$$
+
+$$
+\begin{array}{c p{1cm} c}
+   && \uncover<6->{2} \\
+\uncover<4->{2} && \uncover<5->{2} \\
+\uncover<2->{3} && \uncover<3->{3} \\
+\end{array}
+$$
+\end{frame}
+
+\begin{frame}
+
+\uncover<+->{$$
+P(B)=\max \left(\sum_{x\in B} x, \sum_{x\in A\setminus B} x \right)
+$$}
+
+\uncover<+->{$$
+OPT(A) = \min _{B\subset A} P(B)
+$$}
+
+\uncover<+->{Если $c$ -- цена решения, найденного жадным алгоритмом для разбиения множества $A$, то $c\le 4 OPT(A)/3$}
+
+\uncover<+->{$$
+d(B)=\left|\sum_{x\in B} - \sum_{x\in A\setminus B} x\right|
+$$}
+
+\uncover<+->{Если $B$ -- решение, найденное жадным алгоритмом, то $d(B)=O\left(|A|^{-1}\right)$}
+
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=5cm, y=5cm]
+\node (n0) at (0,0) {a};
+\node (n1) at (1,0) {b};
+\node (n2) at (0,1) {c};
+\node (n3) at (1,1) {d};
+
+\path[edge] (n0) --  node[above left] {1} (0.5,0.5) -- (n3);
+\path[edge] (n0) -- node[left] {2} (n2);
+\path[edge] (n0) -- node[below] {2} (n1);
+
+\path[edge] (n2) --  node[below left] {100} (0.5,0.5)-- (n1);
+\path[edge] (n1) -- node[right] {2} (n3);  
+\path[edge] (n2) -- node[above] {2} (n3);  
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\end{document}

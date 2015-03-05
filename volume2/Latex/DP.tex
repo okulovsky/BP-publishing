@@ -1,0 +1,30 @@
+\documentclass[24pt,pdf,hyperref={unicode},aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{tikz}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+
+\tikzstyle{dedge} = [draw,thick,->]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{gedge} = [draw=green,thick,-]
+\tikzstyle{redge} = [draw=red,thick,-]
+\tikzstyle{ver} = [circle, draw=black]
+\tikzstyle{verg} = [circle, draw=black, fill=gray]
+\tikzstyle{verb} = [circle, draw=black, fill=black, text=white]
+
+\deftranslation[to=russian]{Lemma}{Лемма}
+\deftranslation[to=russian]{Theorem}{Теорема}
+
+
+\newcommand{\seg}[5]{
+	\draw (#1,#3) -- node[above] {$w(#4)=#5$} (#2,#3);
+	\draw ($(#1,#3)-(0,0.1)$) -- ($(#1,#3)+(0,0.1)$);
+	\draw ($(#2,#3)-(0,0.1)$) --  ($(#2,#3)+(0,0.1)$);
+}
+
+
+\begin{document}
+
+\end{document}

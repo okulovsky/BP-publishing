@@ -6,3 +6,5 @@ volume2/Latex/*.out
 volume2/Latex/*.snm
 volume2/Latex/*.gz
 volume2/Latex/*.toc
+volume2/LatexCompiledSlides/
+volume1/YoutubeApiCredentials/

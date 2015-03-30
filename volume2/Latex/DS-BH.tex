@@ -1,0 +1,172 @@
+\documentclass[24pt,pdf,hyperref={unicode},aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{tikz}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+
+\tikzstyle{dedge} = [draw,thick,->]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{gedge} = [draw=green,thick,-]
+\tikzstyle{redge} = [draw=red,thick,-]
+\tikzstyle{ver} = [circle, draw=black]
+\tikzstyle{verg} = [circle, draw=black, fill=gray]
+\tikzstyle{verb} = [circle, draw=black, fill=black, text=white]
+
+\deftranslation[to=russian]{Lemma}{Лемма}
+\deftranslation[to=russian]{Theorem}{Теорема}
+
+
+\begin{document}
+
+\section{Очередь с приоритетами}
+
+\begin{frame}
+Очередь с приоритетами содержит ключи с числовыми значениями, и допускает следующие операции: 
+\begin{itemize}
+\item Добавление ключа со значением
+\item Удаление ключа 
+\item Изменение значения по данному ключу
+\item Извлечение ключа с минимальным (максимальным) значением.
+\end{itemize}
+\end{frame}
+
+\section{Улучшенный алгоритм Дейкстры}
+
+\begin{frame}
+Проектируем интерфейс
+\end{frame}
+
+\begin{frame}
+\begin{huge}
+$$
+\Theta\left(|V|T_{min} + |E|T_{upd}\right)
+$$
+\end{huge}
+\end{frame}
+
+\section{Бинарное дерево поиска}
+
+\begin{frame}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{center}
+\begin{tikzpicture}
+
+\end{tikzpicture}
+\end{center}
+\column{0.5\textwidth}
+\end{columns}
+\end{frame}
+
+\section{Бинарная куча}
+
+\begin{frame}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=-1cm]
+\node[ver] (n0) at (0,0) {2};
+\node[ver] (n1) at (-2,1) {6};
+\node[ver] (n2) at (2,1) {4};
+\node[ver] (n3) at (-3,2) {8};
+\node[ver] (n4) at (-1,2) {7};
+\path[dedge] (n0) -- (n1);
+\path[dedge] (n1) -- (n3);
+\path[dedge] (n1) -- (n4);
+\path[dedge] (n0) -- (n2);
+\end{tikzpicture}
+\end{center}
+\column{0.5\textwidth}
+\uncover<+->{
+Определение бинарной кучи:
+\begin{itemize}
+\item
+Получена из полного бинарного дерева некоторой высоты $k$, из последнего уровня которого удалено несколько элементов справа налево
+\item Для любых $u,v\in V$, если $(u,v)\in E$, то $val(u)\le val(v)$
+\end{itemize}
+}
+
+\uncover<+->{
+Свойства бинарной кучи:
+\begin{itemize}
+\item 
+Минимальный элемент всегда находится в корне
+\item 
+Бинарная куча может быть реализована в виде массива. Корень кучи имеет индекс 1, дети элемента с индексом $i$ располагаются в индексах $2i$ и $2i+1$. 
+\end{itemize}
+}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=-1cm]
+\node[ver] (n0) at (0,0) {\only<1-4>{3}\only<5->{1}};
+\node[ver] (n1) at (-2,1) {5};
+\node[ver] (n2) at (2,1) {\only<1-3>{4}\only<4>{1}\only<5-6>{3}\only<7->{2}};
+\node[ver] (n3) at (-3,2) {7};
+\path[dedge] (n0) -- (n1);
+\path[dedge] (n1) -- (n3);
+\path[dedge] (n0) -- (n2);
+
+\uncover<2->{
+\node[ver] (n4) at (-1,2) {6};
+\path[dedge] (n1)--(n4);	
+}
+
+\uncover<3->{
+\node[ver] (n5) at (1,2) {\only<3>{1}\only<4->{4}};
+\path[dedge] (n2)--(n5);	
+}
+
+\uncover<6->{
+\node[ver] (n6) at (3,2)
+{\only<6>{2}\only<7->{3}};
+\path[dedge] (n2)--(n6);	
+}
+
+\uncover<8->{
+\node[ver] (n7) at (-3.5,3) {10};	
+\path[dedge] (n3) -- (n7);
+}
+
+
+\end{tikzpicture}
+\end{center}	
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=-1cm]
+\node[ver] (n1) at (-2,1) {\only<1-5>{6}\only<6>{8}\only<7->{7}};
+\node[ver] (n2) at (2,1) {\only<1-3>{4}\only<4->{6}};
+\node[ver] (n3) at (-3,2) {\only<1-6>{7}\only<7->{8}};
+\path[dedge] (n1) -- (n3);
+
+\only<1-4>
+{
+\node[ver] (n4) at (-1,2) {8};
+\path[dedge] (n1) -- (n4);
+}
+
+\uncover<1-2>
+{
+\node[ver] (n5) at (1,2) {6};
+\path[dedge] (n2) -- (n5);
+}
+
+\uncover<1,3->
+{
+\node[ver] (n0) at (0,0) {\only<1,2>{2}\only<3>{6}\only<4>{4}\only<5>{8}\only<6->{6}};
+\path[dedge] (n0) -- (n1);
+\path[dedge] (n0) -- (n2);
+}
+
+\end{tikzpicture}
+\end{center}	
+\end{frame}
+
+
+\end{document}

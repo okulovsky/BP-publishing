@@ -42,7 +42,7 @@ namespace Slide08
 					size));
 		}
 
-		public static void Main()
+		public static void MainX()
 		{
 			Application.Run(new MyForm { ClientSize = new Size(300, 300) });
 		}

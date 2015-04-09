@@ -55,7 +55,7 @@ namespace Slide02
             Console.ReadKey();
         }
 
-        static void Main()
+        static void MainЧ()
         {
             var map = new State[labyrinth[0].Length, labyrinth.Length];
 

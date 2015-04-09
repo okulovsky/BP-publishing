@@ -34,7 +34,7 @@
 			Console.WriteLine(str);
 		}
 
-		public static void Main()
+		public static void MainX()
 		{
 			var enterprise = new Enterprise { Name = "Vector", DirectorName = "Jones", RegistrationNumber = "123" };
 			Print(enterprise);

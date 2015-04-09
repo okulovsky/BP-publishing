@@ -7,7 +7,7 @@ namespace Lecture27
 {
     class Program
     {
-        static void Main(string[] args)
+        static void MainЧ(string[] args)
         {
         }
     }

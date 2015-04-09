@@ -8,5 +8,6 @@ volume2/Latex/*.gz
 volume2/Latex/*.toc
 volume2/LatexCompiledSlides/
 volume1/YoutubeApiCredentials/
-bin/
-obj/
+bin
+obj
+CS/BasicProgramming.v12.suo

@@ -34,7 +34,7 @@ namespace Slide01
 			button.Click += (sender, args) => box.Text = (int.Parse(box.Text) + 1).ToString();
 		}
 
-		public static void Main()
+		public static void Mainx()
 		{
 			Application.Run(new MyForm());
 		}

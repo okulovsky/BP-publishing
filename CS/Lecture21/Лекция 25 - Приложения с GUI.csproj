@@ -73,6 +73,15 @@
     <Compile Include="S08 - правильный таймер.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="S09 - без MVC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="S10- с MVC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="S085 - MVC.odp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,32 +11,32 @@ namespace Slide07
 	{
 		public MyForm()
 		{
+			ClientSize = new Size(600, 600);
+			var centerX = ClientSize.Width / 2;
+			var centerY = ClientSize.Height / 2;
+			var size = 100;
+			var radius = Math.Min(ClientSize.Width, ClientSize.Height) / 3;
+			
 			int time = 0;
 			var timer = new Timer();
 			timer.Interval = 500;
-			var radius = Math.Min(ClientSize.Width,ClientSize.Height)/3;
-			var centerX = ClientSize.Width/2;
-			var centerY = ClientSize.Height/2;
-			var size = 400;
 			timer.Tick += (sender, args) =>
 			{
 				time++;
 				var graphics = CreateGraphics();
-				graphics.Clear(Color.White);
+				graphics.TranslateTransform(centerX, centerY);
+				graphics.RotateTransform(-time*(360f / 12));
 				graphics.FillEllipse(
 					Brushes.Blue,
-					new Rectangle(
-						(int)(centerX + radius * Math.Cos(time * Math.PI / 6) - size / 2),
-						(int)(centerY - radius * Math.Sin(time * Math.PI / 6) - size / 2),
-						size,
-						size));
+					new Rectangle(radius-size/2, -size/2,size,size));
+						
 			};
 			timer.Start();
 		}
 
-		public static void MainЧ()
+		public static void MainX()
 		{
-			Application.Run(new MyForm { ClientSize = new Size(300, 300) });
+			Application.Run(new MyForm());
 		}
 	}
 }

@@ -12,38 +12,39 @@ namespace Slide08
 		public MyForm()
 		{
 			DoubleBuffered = true;
+			ClientSize = new Size(600, 600);
+			var centerX = ClientSize.Width / 2;
+			var centerY = ClientSize.Height / 2;
+			var size = 100;
+			var radius = Math.Min(ClientSize.Width, ClientSize.Height) / 3;
+
+			var time = 0;
 			var timer = new Timer();
 			timer.Interval = 500;
 			timer.Tick += (sender, args) =>
 			{
-				sceneState++;
+				time++;
 				Invalidate();
-
 			};
 			timer.Start();
+
+			Paint += (sender, args) =>
+			{
+				for (int i = 0; i <= time; i++)
+				{
+					args.Graphics.TranslateTransform(centerX, centerY);
+					args.Graphics.RotateTransform(i * 360f / 10);
+					args.Graphics.FillEllipse(Brushes.Blue, radius - size / 2, -size / 2, size, size);
+					args.Graphics.ResetTransform();
+				}
+			};
 		}
 
-		int sceneState;
-
-		protected override void OnPaint(PaintEventArgs e)
+		public static void Main()
 		{
-			var radius = Math.Min(ClientSize.Width, ClientSize.Height) / 3;
-			var centerX = ClientSize.Width / 2;
-			var centerY = ClientSize.Height / 2;
-			var size = 400;
-			e.Graphics.Clear(Color.White);
-			e.Graphics.FillEllipse(
-				Brushes.Blue,
-				new Rectangle(
-					(int)(centerX + radius * Math.Cos(sceneState * Math.PI / 6) - size / 2),
-					(int)(centerY - radius * Math.Sin(sceneState * Math.PI / 6) - size / 2),
-					size,
-					size));
+			Application.Run(new MyForm());
 		}
 
-		public static void MainX()
-		{
-			Application.Run(new MyForm { ClientSize = new Size(300, 300) });
-		}
+
 	}
 }

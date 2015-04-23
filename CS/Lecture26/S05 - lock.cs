@@ -18,7 +18,7 @@ class S05
 		}
 	}
 
-	static void Main()
+	static void MainX()
 	{
 		new Action(MakeWork).BeginInvoke(null, null);
 		while (true)

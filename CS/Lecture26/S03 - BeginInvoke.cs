@@ -16,7 +16,7 @@ class S03
 		return a;
 	}
 
-	static void Main()
+	static void MainX()
 	{
 		var func = new Func<int, double>(MakeWork);
 		var result = func.BeginInvoke(1, null, null);

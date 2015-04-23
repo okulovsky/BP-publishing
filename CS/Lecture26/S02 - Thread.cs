@@ -12,7 +12,6 @@ class S01
 		while (true)
 		{
 			for (int i = 0; i < 1000000; i++)
-				//for (int j = 0; j < 1000; j++)
 				a /= 1.01;
 			Console.WriteLine(number);
 		}
@@ -22,8 +21,8 @@ class S01
 	{
 		var thread = new Thread(new ThreadStart(() => MakeWork(1)));
 		thread.Start();
-		//thread = new Thread(new ThreadStart(() => MakeWork(2)));
-		//thread.Start();
+		thread = new Thread(new ThreadStart(() => MakeWork(2)));
+		thread.Start();
 		Thread.Sleep(Timeout.Infinite);
 	}
 

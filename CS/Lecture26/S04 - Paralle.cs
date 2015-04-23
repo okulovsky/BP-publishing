@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 
 class S04
@@ -16,7 +17,7 @@ class S04
 		Console.WriteLine(number);
 	}
 
-	static void Main()
+	static void MainX()
 	{
 		Parallel.For(0, 10, MakeWork);
 	}
